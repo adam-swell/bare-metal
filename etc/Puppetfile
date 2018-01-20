@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+forge "https://forgeapi.puppetlabs.com"
+
+mod 'crayfishx-firewalld', '3.4.0'
+mod 'elastic-elasticsearch', '6.1.0'
+mod 'elastic-kibana', '6.0.0'
+mod 'puppetlabs-java', '2.3.0'

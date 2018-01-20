@@ -1,0 +1,18 @@
+#!/bin/bash
+
+TOPDIR=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd)
+
+package() {
+  [[ $# -ge 2 ]] && local P=$2 || local P=$1
+  [[ $(rpm -qa $1 | wc -l) -eq 1 ]] || sudo yum install -y $P
+}
+
+echo "--- Please enter password for sudo!"
+sudo -v
+package puppet5-release https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+package puppet-agent
+sudo /opt/puppetlabs/bin/puppet apply $TOPDIR/etc/manifests/bootstrap.pp
+sudo -K
+
+[[ -d $TOPDIR/etc/modules ]] && ACTION=update || ACTION=install
+cd $TOPDIR/etc && librarian-puppet $ACTION 
