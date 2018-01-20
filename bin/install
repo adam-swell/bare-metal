@@ -6,10 +6,8 @@ MODFLG="--modulepath=${ETCDIR}/modules"
 case $1 in
   elasticsearch|kibana)
     if [[ $# -lt 2 ]]; then
-      echo "default"
       EXPORT="FACTER_unicast=127.0.0.1"
     else
-      echo "custom"
       EXPORT="FACTER_unicast=$2" 
     fi
 
