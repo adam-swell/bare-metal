@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ETCDIR=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd)/etc
+PUPPET="sudo puppet apply --modulepath=${ETCDIR}/modules"
+
+case $1 in
+  elasticsearch|kibana)
+    $PUPPET ${ETCDIR}/manifests/${1}.pp ;;
+  *)
+    echo "!!! Invalid package '$1'!" ;;
+esac
