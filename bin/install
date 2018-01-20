@@ -1,11 +1,21 @@
 #!/bin/bash
 
 ETCDIR=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd)/etc
-PUPPET="sudo puppet apply --modulepath=${ETCDIR}/modules"
+MODFLG="--modulepath=${ETCDIR}/modules"
 
 case $1 in
   elasticsearch|kibana)
-    $PUPPET ${ETCDIR}/manifests/${1}.pp ;;
+    if [[ $# -lt 2 ]]; then
+      echo "default"
+      EXPORT="FACTER_unicast=127.0.0.1"
+    else
+      echo "custom"
+      EXPORT="FACTER_unicast=$2" 
+    fi
+
+    sudo $EXPORT puppet apply $MODFLG ${ETCDIR}/manifests/elasticsearch.pp ;;
+  kibana)
+    sudo puppet apply $MODFLG ${ETCDIR}/manifests/kibana.pp ;;
   *)
     echo "!!! Invalid package '$1'!" ;;
 esac

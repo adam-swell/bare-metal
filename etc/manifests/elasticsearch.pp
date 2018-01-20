@@ -8,8 +8,10 @@ class { 'elasticsearch':
 
 elasticsearch::instance { $hostname : 
   config => {
-    'network.host' => '0.0.0.0',
-    'xpack.security.enabled' => false,
+    'cluster.name'                     => 'surf-d',
+    'discovery.zen.ping.unicast.hosts' => [ $unicast ],
+    'network.host'                     => '0.0.0.0',
+    'xpack.security.enabled'           => false,
   },
 }
 
@@ -25,6 +27,9 @@ firewalld::custom_service { 'elasticsearch':
   }, {
     'port'     => '9300',
     'protocol' => 'tcp',
+  }, {
+    'port'     => '9300',
+    'protocol' => 'udp',
   }],
   destination => {
     'ipv4'     => '0.0.0.0/0',
