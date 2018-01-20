@@ -7,16 +7,20 @@ class { 'elasticsearch':
 }
 
 elasticsearch::instance { $hostname : 
-  config => {
+  config      => {
     'cluster.name'                     => 'surf-d',
     'discovery.zen.ping.unicast.hosts' => [ $unicast ],
     'network.host'                     => '0.0.0.0',
     'xpack.security.enabled'           => false,
   },
+  jvm_options => [ 
+    '-Xms12g', 
+    '-Xmx12g', 
+  ],
 }
 
 elasticsearch::plugin { 'x-pack':
-  instances => $hostname,
+  instances   => $hostname,
 }
 
 firewalld::custom_service { 'elasticsearch':
